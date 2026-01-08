@@ -1,0 +1,2756 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiekoDB Documentation</title>
+
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg%20version%3D%221.2%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20369%20368%22%3E%0A%20%20%20%20%3Cstyle%3E%0A%20%20%20%20%20%20%20%20.s0%20%7B%20fill%3A%20%231876db%20%7D%0A%20%20%20%20%20%20%20%20.s1%20%7B%20fill%3A%20none%3B%20stroke%3A%20%23ffffff%3B%20stroke-miterlimit%3A%2010%3B%20stroke-width%3A%2018%20%7D%0A%20%20%20%20%3C/style%3E%0A%20%20%20%20%3Cpath%20id%3D%22%26lt%3BPath%26gt%3B%20copy%22%20class%3D%22s0%22%20d%3D%22m318.05%20368.09h-266.38c-27.94%200-50.81-22.86-50.81-50.81v-266.38c0-27.94%2022.87-50.81%2050.81-50.81h266.38c27.95%200%2050.81%2022.87%2050.81%2050.81v266.38c0%2027.95-22.86%2050.81-50.81%2050.81z%22%20/%3E%0A%20%20%20%20%3Cpath%20id%3D%22%26lt%3BPath%26gt%3B%20copy%202%22%20class%3D%22s1%22%20d%3D%22m72.07%20123.74l179.63-56.73c22.21-7.01%2040.53%2018.35%2026.89%2037.23l-122.9%20170.17c-10.64%2014.73-33.12%2012.91-41.25-3.34l-56.72-113.45c-6.65-13.3%200.17-29.4%2014.35-33.88z%22%20/%3E%0A%20%20%20%20%3Cpath%20id%3D%22%26lt%3BPath%26gt%3B%20copy%203%22%20class%3D%22s1%22%20d%3D%22m120.4%20154.62l165.13-52.15c20.43-6.45%2037.27%2016.87%2024.73%2034.23l-112.99%20156.45c-9.78%2013.54-30.45%2011.86-37.92-3.08l-52.15-104.3c-6.11-12.23%200.16-27.03%2013.2-31.15z%22%20/%3E%0A%3C/svg%3E"
+        type="image/svg+xml">
+
+    <style>
+        :root {
+            --background: 0 0% 3.9%;
+            --foreground: 0 0% 98%;
+            --card: 0 0% 3.9%;
+            --card-foreground: 0 0% 98%;
+            --primary: 0 0% 98%;
+            --muted: 0 0% 14.9%;
+            --muted-foreground: 0 0% 63.9%;
+            --border: 0 0% 14.9%;
+            --accent: 0 0% 14.9%;
+            --success: 142 76% 36%;
+            --warning: 38 92% 50%;
+            --destructive: 0 62.8% 30.6%;
+            --radius: 0.5rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scrollbar-width: thin;
+            scrollbar-color: #202021 #0a0a0a;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #ff0000;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #30363d;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #484f58;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: hsl(var(--background));
+            color: hsl(var(--foreground));
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: hsl(var(--card));
+            border-right: 1px solid hsl(var(--border));
+            padding: 2rem 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .logo {
+            padding: 0 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .logo p {
+            font-size: 0.875rem;
+            color: hsl(var(--muted-foreground));
+        }
+
+        .logo span {
+            font-weight: 500;
+            font-size: 12px;
+            margin-top: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-title {
+            padding: 0 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: hsl(var(--muted-foreground));
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.625rem 1.5rem;
+            color: hsl(var(--muted-foreground));
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background: hsl(var(--accent));
+            color: hsl(var(--foreground));
+        }
+
+        .nav-link.active {
+            background: hsl(var(--accent));
+            color: hsl(var(--foreground));
+            border-left: 3px solid hsl(var(--primary));
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 3rem;
+            max-width: 1200px;
+        }
+
+        .header-section {
+            margin-bottom: 3rem;
+        }
+
+        .header-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .header-section p {
+            font-size: 1.125rem;
+            color: hsl(var(--muted-foreground));
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 2rem;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid hsl(var(--border));
+        }
+
+        .section h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .section p {
+            color: hsl(var(--muted-foreground));
+            margin-bottom: 1rem;
+        }
+
+        .card {
+            background: hsl(var(--card));
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: calc(var(--radius) - 2px);
+            margin-right: 0.5rem;
+        }
+
+        .badge-get {
+            background: hsl(var(--success) / 0.2);
+            color: hsl(var(--success));
+        }
+
+        .badge-post {
+            background: hsl(221 83% 53% / 0.2);
+            color: hsl(221 83% 63%);
+        }
+
+        .badge-patch {
+            background: hsl(var(--warning) / 0.2);
+            color: hsl(var(--warning));
+        }
+
+        .badge-delete {
+            background: hsl(var(--destructive) / 0.2);
+            color: hsl(0 62.8% 50%);
+        }
+
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .endpoint-path {
+            font-family: monospace;
+            font-size: 1rem;
+            color: hsl(var(--foreground));
+        }
+
+
+
+        .code-block pre {
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: hsl(var(--foreground));
+        }
+
+        .code-inline {
+            background: hsl(var(--muted));
+            padding: 0.2rem 0.4rem;
+            border-radius: calc(var(--radius) - 4px);
+            font-family: monospace;
+            font-size: 0.875rem;
+        }
+
+        .code-tabs {
+            margin: 1.5rem 0;
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: hsl(var(--card));
+        }
+
+        .code-tabs-header {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem;
+            border-bottom: 1px solid hsl(var(--border));
+        }
+
+        .code-tab {
+            background: none;
+            border: none;
+            color: hsl(var(--muted-foreground));
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            border-radius: 0.25rem;
+            white-space: nowrap;
+        }
+
+        .code-tab.active {
+            background: hsl(var(--muted));
+            color: hsl(var(--foreground));
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: hsl(var(--muted-foreground));
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.5rem;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ================= MOBILE ================= */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                padding: 1.5rem;
+            }
+
+            .code-tabs-header {
+                flex-wrap: wrap;
+            }
+
+            .copy-btn {
+                width: 100%;
+                text-align: right;
+            }
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        th {
+            background: hsl(var(--muted));
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid hsl(var(--border));
+        }
+
+        td {
+            padding: 0.75rem;
+            border: 1px solid hsl(var(--border));
+        }
+
+        tr:hover {
+            background: hsl(var(--accent) / 0.5);
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .alert-info {
+            background: hsl(221 83% 53% / 0.1);
+            border: 1px solid hsl(221 83% 53% / 0.3);
+        }
+
+        .alert-warning {
+            background: hsl(var(--warning) / 0.1);
+            border: 1px solid hsl(var(--warning) / 0.3);
+        }
+
+        .alert-icon {
+            flex-shrink: 0;
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        .alert-content {
+            flex: 1;
+            font-size: 0.875rem;
+        }
+
+        .property-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .property-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid hsl(var(--border));
+        }
+
+        .property-list li:last-child {
+            border-bottom: none;
+        }
+
+        .property-name {
+            font-family: monospace;
+            font-weight: 600;
+            color: hsl(var(--foreground));
+        }
+
+        .property-type {
+            color: hsl(var(--muted-foreground));
+            font-style: italic;
+            margin-left: 0.5rem;
+        }
+
+        .property-description {
+            color: hsl(var(--muted-foreground));
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                padding: 1.5rem;
+            }
+
+            .header-section h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .logo-dashboard {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .logo-dashboard svg {
+            width: 40px;
+            height: 40px;
+            margin-right: 13px;
+            border-radius: 10px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #00ff88, #00cc6a);
+            border-radius: 8px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .copy-btn:hover {
+            color: #e6e6e6;
+            transition: 0.2s ease-in-out;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.css">
+
+    <style>
+        pre {
+            background: #1e1e1e !important;
+            border-radius: 8px;
+            padding: 1rem !important;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            overflow: auto;
+            padding-left: 50px !important;
+        }
+
+        code {
+            font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+        }
+
+        div.code-toolbar>.toolbar {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        div.code-toolbar:hover>.toolbar {
+            opacity: 1;
+        }
+
+        div.code-toolbar>.toolbar button {
+            background: #2d2d2d !important;
+            color: #ccc !important;
+            border-radius: 6px;
+            border: 1px solid #3c3c3c;
+            font-size: 0.75rem;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        div.code-toolbar>.toolbar button:hover {
+            background: #3c3c3c !important;
+            color: #fff !important;
+        }
+
+        div.code-toolbar>.toolbar {
+            display: none !important;
+        }
+
+        pre {
+            position: relative;
+        }
+
+        .pre-copy-btn {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            background: #ef242400;
+            border: 1px solid #3c3c3c00;
+            /* border-radius: 6px; */
+            padding: 15px;
+            cursor: pointer;
+            color: #c5c5c5;
+            opacity: 0;
+            transition: opacity 0.15s ease, background 0.15s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        pre:hover .pre-copy-btn {
+            opacity: 1;
+        }
+
+        .pre-copy-btn:hover {
+            background: #3c3c3c00;
+            color: #ffffff;
+        }
+
+        .pre-copy-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .pre-copy-btn {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-dashboard">
+                    <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 369 368" width="427"
+                        height="386">
+                        <style>
+                            .s0 {
+                                fill: #1876db
+                            }
+
+                            .s1 {
+                                fill: none;
+                                stroke: #ffffff;
+                                stroke-miterlimit: 10;
+                                stroke-width: 18
+                            }
+                        </style>
+                        <path id="&lt;Path&gt; copy" class="s0"
+                            d="m318.05 368.09h-266.38c-27.94 0-50.81-22.86-50.81-50.81v-266.38c0-27.94 22.87-50.81 50.81-50.81h266.38c27.95 0 50.81 22.87 50.81 50.81v266.38c0 27.95-22.86 50.81-50.81 50.81z" />
+                        <path id="&lt;Path&gt; copy 2" class="s1"
+                            d="m72.07 123.74l179.63-56.73c22.21-7.01 40.53 18.35 26.89 37.23l-122.9 170.17c-10.64 14.73-33.12 12.91-41.25-3.34l-56.72-113.45c-6.65-13.3 0.17-29.4 14.35-33.88z" />
+                        <path id="&lt;Path&gt; copy 3" class="s1"
+                            d="m120.4 154.62l165.13-52.15c20.43-6.45 37.27 16.87 24.73 34.23l-112.99 156.45c-9.78 13.54-30.45 11.86-37.92-3.08l-52.15-104.3c-6.11-12.23 0.16-27.03 13.2-31.15z" />
+                    </svg>
+                    <div class="logo-text">LiekoDB</div>
+                    <span>v0.1.5</span>
+                </div>
+                <p>Lightweight JSON Database</p>
+            </div>
+
+            <nav>
+                <div class="nav-section">
+                    <div class="nav-title">Getting Started</div>
+                    <a href="#introduction" class="nav-link">Introduction</a>
+                    <a href="#installation" class="nav-link">Installation</a>
+                    <a href="#configuration" class="nav-link">Configuration</a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">CRUD Operations</div>
+                    <a href="#insert" class="nav-link">Insert</a>
+                    <a href="#find" class="nav-link">Find</a>
+                    <a href="#update" class="nav-link">Update</a>
+                    <a href="#delete" class="nav-link">Delete</a>
+                    <a href="#count" class="nav-link">Count</a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">Advanced</div>
+                    <a href="#filters" class="nav-link">Filters & Operators</a>
+                    <a href="#pagination" class="nav-link">Pagination</a>
+                    <a href="#projection" class="nav-link">Field Projection</a>
+                    <a href="#management" class="nav-link">Management</a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">Reference</div>
+                    <a href="#errors" class="nav-link">Error Handling</a>
+                    <a href="#objects" class="nav-link">Data Objects</a>
+                    <a href="#best-practices" class="nav-link">Best Practices</a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">Examples</div>
+                    <a href="#example-basic-crud" class="nav-link">Basic CRUD</a>
+                    <a href="#example-pagination" class="nav-link">Pagination</a>
+                    <a href="#example-advanced-filtering" class="nav-link">Advanced Filtering</a>
+                    <a href="#example-update-operations" class="nav-link">Update Operations</a>
+                    <a href="#example-bulk-operations" class="nav-link">Bulk Operations</a>
+                    <a href="#example-ecommerce" class="nav-link">E-commerce Store</a>
+                    <a href="#example-analytics" class="nav-link">Analytics Dashboard</a>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="header-section">
+                <h1>LiekoDB Documentation</h1>
+                <p>A lightweight, MongoDB-like JSON database for Node.js with local and HTTP modes</p>
+            </div>
+
+            <section id="introduction" class="section">
+                <h2>Introduction</h2>
+                <p>LiekoDB is a fast, lightweight JSON database inspired by MongoDB. It supports two operation modes:
+                </p>
+
+                <div class="card">
+                    <ul class="property-list">
+                        <li>
+                            <span class="property-name">Local Mode</span>
+                            <div class="property-description">Store data in JSON files on your filesystem (Node.js only)
+                            </div>
+                        </li>
+                        <li>
+                            <span class="property-name">HTTP Mode</span>
+                            <div class="property-description">Connect to a remote LiekoDB server using HTTP client</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="alert alert-info">
+                    <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    <div class="alert-content">
+                        <strong>Note:</strong> Local mode is only available in Node.js. Browser environments require
+                        HTTP mode with a token.
+                    </div>
+                </div>
+            </section>
+
+            <section id="installation" class="section">
+                <h2>Installation</h2>
+
+                <h3>NPM</h3>
+                <div class="code-block">
+                    <pre><code>npm install liekodb</code></pre>
+                </div>
+
+                <h3>Yarn</h3>
+                <div class="code-block">
+                    <pre><code>yarn add liekodb</code></pre>
+                </div>
+
+                <h3>Basic Usage</h3>
+                <div class="code-block">
+                    <pre><code>const LiekoDB = require('liekodb');
+
+const db = new LiekoDB({
+  storagePath: './storage',
+  debug: true
+});
+
+const users = db.collection('users');</code></pre>
+                </div>
+            </section>
+
+            <section id="configuration" class="section">
+                <h2>Configuration</h2>
+
+                <h3>Local Mode (Node.js)</h3>
+                <div class="code-block">
+                    <pre><code>const db = new LiekoDB({
+  storagePath: './storage',      // Storage directory
+  autoSaveInterval: 5000,         // Auto-save every 5s
+  debug: true                     // Enable detailed logs
+});</code></pre>
+                </div>
+
+                <h3>HTTP Mode (Client)</h3>
+                <div class="code-block">
+                    <pre><code>const db = new LiekoDB({
+  databaseUrl: 'http://127.0.0.1:8050',
+  token: 'your-auth-token',       // Required for HTTP mode
+  poolSize: 10,                   // Connection pool size
+  timeout: 15000,                 // Request timeout (ms)
+  debug: true
+});</code></pre>
+                </div>
+
+                <h3>Configuration Options</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Option</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code class="code-inline">storagePath</code></td>
+                                <td>string</td>
+                                <td>'./storage'</td>
+                                <td>Directory for JSON files (Local mode)</td>
+                            </tr>
+                            <tr>
+                                <td><code class="code-inline">autoSaveInterval</code></td>
+                                <td>number</td>
+                                <td>5000</td>
+                                <td>Auto-save interval in milliseconds</td>
+                            </tr>
+                            <tr>
+                                <td><code class="code-inline">debug</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>Enable detailed logging</td>
+                            </tr>
+                            <tr>
+                                <td><code class="code-inline">databaseUrl</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>Remote database URL (HTTP mode)</td>
+                            </tr>
+                            <tr>
+                                <td><code class="code-inline">token</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>Authentication token (HTTP mode)</td>
+                            </tr>
+                            <tr>
+                                <td><code class="code-inline">poolSize</code></td>
+                                <td>number</td>
+                                <td>10</td>
+                                <td>HTTP connection pool size</td>
+                            </tr>
+                            <tr>
+                                <td><code class="code-inline">timeout</code></td>
+                                <td>number</td>
+                                <td>15000</td>
+                                <td>Request timeout in milliseconds</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="insert" class="section">
+                <h2>Insert Documents</h2>
+                <p>Add new documents to a collection. Supports single or bulk insertion with automatic ID generation.
+                </p>
+
+                <div class="card">
+                    <h3>Insert Single Document</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.insert({
+  username: 'alice',
+  email: 'alice@example.com',
+  age: 28
+});
+
+console.log(data);
+// {
+//   insertedCount: 1,
+//   insertedIds: ['abc123def456'],
+//   totalDocuments: 1
+// }</code></pre>
+                    </div>
+
+                    <h3>Insert Multiple Documents</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.insert([
+  { username: 'bob', email: 'bob@example.com', age: 32 },
+  { username: 'charlie', email: 'charlie@example.com', age: 25 }
+]);
+
+console.log(data);
+// {
+//   insertedCount: 2,
+//   firstId: '1a2b3c4d5e6f7890',
+//   lastId: '1a2b3c4d5e6f7891',
+//   totalDocuments: 3
+// }</code></pre>
+                    </div>
+
+                    <h3>Upsert (Insert or Update)</h3>
+                    <div class="code-block">
+                        <pre><code>// If document with this ID exists, it will be updated
+// Otherwise, it will be inserted
+const { error, data } = await users.insert({
+  id: 'user_123',
+  username: 'alice',
+  email: 'alice_updated@example.com'
+});
+
+console.log(data);
+// {
+//   insertedCount: 0,
+//   updatedCount: 1,
+//   totalDocuments: 3
+// }</code></pre>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        <div class="alert-content">
+                            Documents automatically receive <code class="code-inline">id</code>, <code
+                                class="code-inline">createdAt</code>, and <code class="code-inline">updatedAt</code>
+                            fields.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="find" class="section">
+                <h2>Find Documents</h2>
+                <p>Query documents with filters, sorting, and pagination.</p>
+
+                <div class="card">
+                    <h3>Find All Documents</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.find();
+
+console.log(data.foundDocuments);
+// [ { id: '...', username: 'alice', ... }, ... ]</code></pre>
+                    </div>
+
+                    <h3>Find with Filters</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.find(
+  { age: { $gte: 25 } },
+  {
+    sort: { age: -1 },
+    limit: 10,
+    fields: { username: 1, email: 1 }
+  }
+);
+
+console.log(data);
+// {
+//   foundCount: 5,
+//   foundDocuments: [...],
+//   totalDocuments: 20
+// }</code></pre>
+                    </div>
+
+                    <h3>Find One Document</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.findOne(
+  { email: 'alice@example.com' }
+);
+
+console.log(data); // Document or null</code></pre>
+                    </div>
+
+                    <h3>Find by ID</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.findById('user_123');
+
+console.log(data); // Document or null</code></pre>
+                    </div>
+
+                    <h3>Query Options</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Option</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code class="code-inline">sort</code></td>
+                                    <td>object</td>
+                                    <td>Sort results (1 ascending, -1 descending)</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">limit</code></td>
+                                    <td>number</td>
+                                    <td>Maximum number of results</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">skip</code></td>
+                                    <td>number</td>
+                                    <td>Number of documents to skip</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">page</code></td>
+                                    <td>number</td>
+                                    <td>Page number (alternative to skip)</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">fields</code></td>
+                                    <td>object</td>
+                                    <td>Field projection (1 include, -1 exclude)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="update" class="section">
+                <h2>Update Documents</h2>
+                <p>Modify existing documents using update operators.</p>
+
+                <div class="card">
+                    <h3>Update by ID</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.updateById(
+  'user_123',
+  { $inc: { loginCount: 1 } },
+  { returnType: 'document' }
+);
+
+console.log(data.document); // Updated document</code></pre>
+                    </div>
+
+                    <h3>Update Multiple Documents</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.update(
+  { age: { $lt: 30 } },
+  { $set: { status: 'young' } },
+  { returnType: 'count' }
+);
+
+console.log(data);
+// {
+//   updatedCount: 15,
+//   totalDocuments: 100
+// }</code></pre>
+                    </div>
+
+                    <h3>Update Operators</h3>
+                    <div class="code-block">
+                        <pre><code>// $set - Set a value
+await users.update({}, { $set: { verified: true } });
+
+// $inc - Increment
+await users.update({}, { $inc: { visits: 1 } });
+
+// $push - Add to array
+await users.update({}, { $push: { tags: 'premium' } });
+
+// $addToSet - Add without duplicates
+await users.update({}, { $addToSet: { roles: 'admin' } });
+
+// $pull - Remove from array
+await users.update({}, { $pull: { tags: 'banned' } });
+
+// $unset - Remove field
+await users.update({}, { $unset: { tempField: 1 } });</code></pre>
+                    </div>
+
+                    <h3>Update Nested Fields</h3>
+                    <div class="code-block">
+                        <pre><code>await domains.update(
+  { name: 'example.com' },
+  { $set: { 'serverMOTD.raw': 'New message' } }
+);</code></pre>
+                    </div>
+
+                    <h3>Return Types</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code class="code-inline">count</code></td>
+                                    <td>Returns only the count of updated documents</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">ids</code></td>
+                                    <td>Returns IDs of updated documents</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">documents</code></td>
+                                    <td>Returns full updated documents</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="delete" class="section">
+                <h2>Delete Documents</h2>
+                <p>Remove documents from collections.</p>
+
+                <div class="card">
+                    <h3>Delete by ID</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.deleteById('user_123');
+
+console.log(data);
+// {
+//   deletedCount: 1,
+//   deletedId: 'user_123'
+// }</code></pre>
+                    </div>
+
+                    <h3>Delete Multiple by IDs</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.delete({ 
+  id: { $in: ['user_123', 'user_456', 'user_789'] } 
+});
+
+console.log(data);
+// {
+//   collectionName: 'users',
+//   deletedCount: 3
+// }</code></pre>
+                    </div>
+
+                    <h3>Delete with Filters</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.delete({ 
+  age: { $lt: 18 } 
+});
+
+console.log(data);
+// {
+//   collectionName: 'users',
+//   deletedCount: 5
+// }</code></pre>
+                    </div>
+
+                    <h3>Drop Collection</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.drop();
+
+console.log(data);
+// {
+//   collectionName: 'users',
+//   dropped: true
+// }</code></pre>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                            </path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        <div class="alert-content">
+                            <strong>Warning:</strong> The <code class="code-inline">delete()</code> method requires
+                            filters to prevent accidental deletion of all documents. Use <code
+                                class="code-inline">drop()</code> to delete the entire collection.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="count" class="section">
+                <h2>Count Documents</h2>
+                <p>Get the number of documents matching a filter.</p>
+
+                <div class="card">
+                    <h3>Count All Documents</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.count();
+
+console.log(data); // 150</code></pre>
+                    </div>
+
+                    <h3>Count with Filters</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.count({ 
+  age: { $gte: 25 } 
+});
+
+console.log(data); // 42</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="filters" class="section">
+                <h2>Filters & Operators</h2>
+                <p>LiekoDB supports MongoDB-like query operators for filtering documents.</p>
+
+                <div class="card">
+                    <h3>Complete Operators Reference</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Operator</th>
+                                    <th>Category</th>
+                                    <th>Description</th>
+                                    <th>Example</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code class="code-inline">$eq</code></td>
+                                    <td>Comparison</td>
+                                    <td>Matches values that are equal to a specified value</td>
+                                    <td><code class="code-inline">{ age: { $eq: 25 } }</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">$ne</code></td>
+                                    <td>Comparison</td>
+                                    <td>Matches values that are not equal to a specified value</td>
+                                    <td><code class="code-inline">{ status: { $ne: 'banned' } }</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">$gt</code></td>
+                                    <td>Comparison</td>
+                                    <td>Matches values that are greater than a specified value</td>
+                                    <td><code class="code-inline">{ age: { $gt: 18 } }</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">$gte</code></td>
+                                    <td>Comparison</td>
+                                    <td>Matches values that are greater than or equal to a specified value</td>
+                                    <td><code class="code-inline">{ age: { $gte: 18 } }</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">$lt</code></td>
+                                    <td>Comparison</td>
+                                    <td>Matches values that are less than a specified value</td>
+                                    <td><code class="code-inline">{ age: { $lt: 65 } }</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">$lte</code></td>
+                                    <td>Comparison</td>
+                                    <td>Matches values that are less than or equal to a specified value</td>
+                                    <td><code class="code-inline">{ age: { $lte: 65 } }</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">$in</code></td>
+                                    <td>Comparison</td>
+                                    <td>Matches any of the values specified in an array</td>
+                                    <td><code class="code-inline">{ status: { $in: ['active', 'pending'] } }</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">$nin</code></td>
+                                    <td>Comparison</td>
+                                    <td>Matches none of the values specified in an array</td>
+                                    <td><code class="code-inline">{ role: { $nin: ['admin', 'mod'] } }</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">$and</code></td>
+                                    <td>Logical</td>
+                                    <td>Joins query clauses with a logical AND</td>
+                                    <td><code
+                                            class="code-inline">{ $and: [{ age: { $gte: 18 } }, { status: 'active' }] }</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">$or</code></td>
+                                    <td>Logical</td>
+                                    <td>Joins query clauses with a logical OR</td>
+                                    <td><code class="code-inline">{ $or: [{ role: 'admin' }, { role: 'mod' }] }</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">$not</code></td>
+                                    <td>Logical</td>
+                                    <td>Inverts the effect of a query expression</td>
+                                    <td><code class="code-inline">{ age: { $not: { $lt: 18 } } }</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">$nor</code></td>
+                                    <td>Logical</td>
+                                    <td>Joins query clauses with a logical NOR</td>
+                                    <td><code class="code-inline">{ $nor: [{ banned: true }, { deleted: true }] }</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">$exists</code></td>
+                                    <td>Element</td>
+                                    <td>Matches documents that have the specified field</td>
+                                    <td><code class="code-inline">{ email: { $exists: true } }</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">$regex</code></td>
+                                    <td>Evaluation</td>
+                                    <td>Matches values that match a specified regular expression</td>
+                                    <td><code class="code-inline">{ email: { $regex: /@gmail\.com$/ } }</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">$mod</code></td>
+                                    <td>Evaluation</td>
+                                    <td>Performs a modulo operation on the value of a field</td>
+                                    <td><code class="code-inline">{ age: { $mod: [2, 0] } }</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Comparison Operators</h3>
+                    <div class="code-block">
+                        <pre><code>// $eq - Equal
+await users.find({ age: 25 });
+await users.find({ age: { $eq: 25 } });
+
+// $ne - Not equal
+await users.find({ status: { $ne: 'banned' } });
+
+// $gt, $gte, $lt, $lte - Greater/Less than
+await users.find({ age: { $gte: 18, $lt: 65 } });
+
+// $in - In array
+await users.find({ 
+  status: { $in: ['active', 'pending'] } 
+});
+
+// $nin - Not in array
+await users.find({ 
+  role: { $nin: ['admin', 'moderator'] } 
+});</code></pre>
+                    </div>
+
+                    <h3>Logical Operators</h3>
+                    <p>By default, multiple filter conditions separated by commas act as a logical AND. You only need
+                        <code class="code-inline">$and</code> for complex nested queries.
+                    </p>
+                    <div class="code-block">
+                        <pre><code>// Implicit $and - Multiple conditions (recommended)
+await users.find({
+  age: { $gte: 18 },
+  status: 'active'
+});
+
+// Explicit $and - Same result, more verbose
+await users.find({
+  $and: [
+    { age: { $gte: 18 } },
+    { status: 'active' }
+  ]
+});
+
+// $or - At least one condition must match
+await users.find({
+  $or: [
+    { role: 'admin' },
+    { role: 'moderator' }
+  ]
+});
+
+// $not - Negation
+await users.find({ 
+  age: { $not: { $lt: 18 } } 
+});
+
+// $nor - None of the conditions match
+await users.find({
+  $nor: [
+    { banned: true },
+    { deleted: true }
+  ]
+});
+
+// Combining implicit AND with $or
+await users.find({
+  status: 'active',  // Implicit AND
+  $or: [
+    { role: 'admin' },
+    { role: 'moderator' }
+  ]
+});</code></pre>
+                    </div>
+
+                    <h3>Special Operators</h3>
+                    <div class="code-block">
+                        <pre><code>// $exists - Field exists
+await users.find({ 
+  email: { $exists: true } 
+});
+
+// $regex - Regular expression
+await users.find({ 
+  email: { $regex: /@gmail\.com$/ } 
+});
+
+// $mod - Modulo operation
+await users.find({ 
+  age: { $mod: [2, 0] }  // Even ages
+});</code></pre>
+                    </div>
+
+                    <h3>Array Queries</h3>
+                    <div class="code-block">
+                        <pre><code>// Match value in array
+await users.find({ tags: 'premium' });
+
+// Match any value
+await users.find({ 
+  tags: { $in: ['vip', 'premium'] } 
+});</code></pre>
+                    </div>
+
+                    <h3>Nested Fields (Dot Notation)</h3>
+                    <div class="code-block">
+                        <pre><code>await domains.find({ 
+  'serverMOTD.raw': 'A Minecraft Server' 
+});
+
+await users.find({ 
+  'address.city': 'Paris' 
+});</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="pagination" class="section">
+                <h2>Pagination</h2>
+                <p>LiekoDB provides flexible pagination with automatic metadata.</p>
+
+                <div class="card">
+                    <h3>Basic Pagination</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.find({}, {
+  limit: 20,
+  page: 2
+});
+
+console.log(data.pagination);
+// {
+//   page: 2,
+//   limit: 20,
+//   total: 150,
+//   totalPages: 8,
+//   hasNext: true,
+//   hasPrev: true,
+//   nextPage: 3,
+//   prevPage: 1,
+//   startIndex: 21,
+//   endIndex: 40
+// }</code></pre>
+                    </div>
+
+                    <h3>Using Skip</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.find({}, {
+  limit: 20,
+  skip: 40  // Skip first 40 documents
+});</code></pre>
+                    </div>
+
+                    <h3>Sorting with Pagination</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.find(
+  { status: 'active' },
+  {
+    sort: { createdAt: -1 },
+    limit: 20,
+    page: 1
+  }
+);</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="projection" class="section">
+                <h2>Field Projection</h2>
+                <p>Select or exclude specific fields from query results.</p>
+
+                <div class="card">
+                    <h3>Include Fields</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.find({}, {
+  fields: { username: 1, email: 1 }
+});
+
+// Only returns: { username: '...', email: '...' }</code></pre>
+                    </div>
+
+                    <h3>Exclude Fields</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.find({}, {
+  fields: { password: -1, apiKey: -1 }
+});
+
+// Returns all fields except password and apiKey</code></pre>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                            </path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        <div class="alert-content">
+                            <strong>Note:</strong> Cannot mix inclusion and exclusion in the same projection.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="management" class="section">
+                <h2>Database Management</h2>
+                <p>Manage collections and database status.</p>
+
+                <div class="card">
+                    <h3>List Collections</h3>
+                    <div class="code-block">
+                        <pre><code>const collections = await db.listCollections();
+
+console.log(collections);
+// [
+//   {
+//     name: 'users',
+//     totalDocuments: 150,
+//     sizeBytes: 45120,
+//     sizeFormatted: '44.06 KB'
+//   },
+//   {
+//     name: 'domains',
+//     totalDocuments: 42,
+//     sizeBytes: 12340,
+//     sizeFormatted: '12.05 KB'
+//   }
+// ]</code></pre>
+                    </div>
+
+                    <h3>Database Status</h3>
+                    <div class="code-block">
+                        <pre><code>const status = await db.status();
+
+console.log(status);
+// {
+//   storagePath: './storage',
+//   collections: [...],
+//   totalCollections: 5,
+//   totalDocuments: 1250,
+//   totalCollectionsSize: 2048576,
+//   totalCollectionsSizeFormatted: '2.00 MB'
+// }</code></pre>
+                    </div>
+
+                    <h3>Close Database</h3>
+                    <div class="code-block">
+                        <pre><code>// Flush all pending writes and close connections
+await db.close();</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="errors" class="section">
+                <h2>Error Handling</h2>
+                <p>All operations return a standardized response format with error handling.</p>
+
+                <div class="card">
+                    <h3>Response Format</h3>
+                    <div class="code-block">
+                        <pre><code>const { error, data } = await users.findById('unknown_id');
+
+if (error) {
+  console.error('Error:', error.message);
+  console.error('Code:', error.code);
+  return;
+}
+
+console.log('Result:', data);</code></pre>
+                    </div>
+
+                    <h3>Error Object Structure</h3>
+                    <div class="code-block">
+                        <pre><code>{
+  error: {
+    message: "Error description",
+    code: 500
+  }
+}</code></pre>
+                    </div>
+
+                    <h3>Common Error Scenarios</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Error</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code class="code-inline">Collection name must be a non-empty string</code></td>
+                                    <td>Invalid collection name provided</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">Filters must be a non-null plain object</code></td>
+                                    <td>Invalid filter format</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">Invalid query operator</code></td>
+                                    <td>Unknown or unsupported operator used</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">Document not found</code></td>
+                                    <td>No document matches the query</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-inline">Delete operation requires filters</code></td>
+                                    <td>Must provide filters to prevent accidental deletion</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="objects" class="section">
+                <h2>Data Objects</h2>
+
+                <div class="card">
+                    <h3>Document Structure</h3>
+                    <p>All documents automatically include these fields:</p>
+                    <ul class="property-list">
+                        <li>
+                            <span class="property-name">id</span>
+                            <span class="property-type">string</span>
+                            <div class="property-description">Unique identifier (auto-generated if not provided)</div>
+                        </li>
+                        <li>
+                            <span class="property-name">createdAt</span>
+                            <span class="property-type">string</span>
+                            <div class="property-description">ISO 8601 timestamp of creation</div>
+                        </li>
+                        <li>
+                            <span class="property-name">updatedAt</span>
+                            <span class="property-type">string</span>
+                            <div class="property-description">ISO 8601 timestamp of last update</div>
+                        </li>
+                    </ul>
+
+                    <h3>Example Document</h3>
+                    <div class="code-block">
+                        <pre><code>{
+  "id": "abc123def456",
+  "username": "alice",
+  "email": "alice@example.com",
+  "age": 28,
+  "createdAt": "2026-01-05T10:30:00.000Z",
+  "updatedAt": "2026-01-05T10:30:00.000Z"
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="best-practices" class="section">
+                <h2>Best Practices</h2>
+                <p>Follow these guidelines to use LiekoDB effectively and avoid common pitfalls.</p>
+
+                <div class="card">
+                    <h3>Collection Design</h3>
+                    <div class="code-block">
+                        <pre><code>// ✅ Good: Descriptive, singular names
+const users = db.collection('users');
+const orders = db.collection('orders');
+
+// ❌ Avoid: Generic or unclear names
+const data = db.collection('data');
+const temp = db.collection('temp');</code></pre>
+                    </div>
+
+                    <ul class="property-list">
+                        <li>
+                            <span class="property-name">Use descriptive names</span>
+                            <div class="property-description">Choose clear, meaningful collection names that describe
+                                the data they contain</div>
+                        </li>
+                        <li>
+                            <span class="property-name">Keep names consistent</span>
+                            <div class="property-description">Use a consistent naming convention (camelCase or
+                                snake_case)</div>
+                        </li>
+                        <li>
+                            <span class="property-name">Avoid special characters</span>
+                            <div class="property-description">Stick to alphanumeric characters, hyphens, and underscores
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Query Optimization</h3>
+                    <div class="code-block">
+                        <pre><code>// ✅ Good: Use field projection to reduce data transfer
+const { data } = await users.find(
+  { status: 'active' },
+  { fields: { username: 1, email: 1 } }
+);
+
+// ✅ Good: Use pagination for large datasets
+const { data } = await users.find(
+  {},
+  { limit: 50, page: 1 }
+);
+
+// ❌ Avoid: Fetching all data without limits
+const { data } = await users.find({});</code></pre>
+                    </div>
+
+                    <ul class="property-list">
+                        <li>
+                            <span class="property-name">Always use pagination</span>
+                            <div class="property-description">Limit results to avoid loading large datasets into memory
+                            </div>
+                        </li>
+                        <li>
+                            <span class="property-name">Project only needed fields</span>
+                            <div class="property-description">Use field projection to reduce response size</div>
+                        </li>
+                        <li>
+                            <span class="property-name">Use specific filters</span>
+                            <div class="property-description">Narrow queries with precise filters to improve performance
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Error Handling</h3>
+                    <div class="code-block">
+                        <pre><code>// ✅ Good: Always check for errors
+const { error, data } = await users.findById('user_123');
+
+if (error) {
+  console.error('Query failed:', error.message);
+  return;
+}
+
+console.log('User found:', data);
+
+// ✅ Good: Use try-catch for operations
+try {
+  const result = await users.insert({ username: 'alice' });
+  if (result.error) {
+    console.error('Insert failed:', result.error);
+  }
+} catch (err) {
+  console.error('Unexpected error:', err);
+}</code></pre>
+                    </div>
+
+                    <ul class="property-list">
+                        <li>
+                            <span class="property-name">Always handle errors</span>
+                            <div class="property-description">Check the error field in responses before accessing data
+                            </div>
+                        </li>
+                        <li>
+                            <span class="property-name">Use try-catch blocks</span>
+                            <div class="property-description">Wrap operations in try-catch to handle unexpected errors
+                            </div>
+                        </li>
+                        <li>
+                            <span class="property-name">Log errors appropriately</span>
+                            <div class="property-description">Log errors with context to facilitate debugging</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Data Validation</h3>
+                    <div class="code-block">
+                        <pre><code>// ✅ Good: Validate data before insertion
+const validateUser = (user) => {
+  if (!user.username || user.username.length < 3) {
+    throw new Error('Username must be at least 3 characters');
+  }
+  if (!user.email || !user.email.includes('@')) {
+    throw new Error('Invalid email address');
+  }
+  return true;
+};
+
+try {
+  validateUser(userData);
+  await users.insert(userData);
+} catch (err) {
+  console.error('Validation failed:', err.message);
+}</code></pre>
+                    </div>
+
+                    <ul class="property-list">
+                        <li>
+                            <span class="property-name">Validate before operations</span>
+                            <div class="property-description">Check data integrity before inserting or updating</div>
+                        </li>
+                        <li>
+                            <span class="property-name">Use consistent schemas</span>
+                            <div class="property-description">Maintain consistent document structure within collections
+                            </div>
+                        </li>
+                        <li>
+                            <span class="property-name">Handle type conversions</span>
+                            <div class="property-description">Ensure data types are correct before storing</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Update Operations</h3>
+                    <div class="code-block">
+                        <pre><code>// ✅ Good: Use update operators for atomic updates
+await users.updateById('user_123', {
+  $inc: { loginCount: 1 },
+  $set: { lastLogin: new Date().toISOString() }
+});
+
+// ✅ Good: Update specific fields
+await users.update(
+  { status: 'pending' },
+  { $set: { status: 'active' } }
+);
+
+// ❌ Avoid: Replacing entire documents unnecessarily
+await users.updateById('user_123', {
+  username: 'alice',
+  email: 'alice@example.com',
+  // ... all other fields
+});</code></pre>
+                    </div>
+
+                    <ul class="property-list">
+                        <li>
+                            <span class="property-name">Use atomic operators</span>
+                            <div class="property-description">Prefer $inc, $push, $set for safer, more efficient updates
+                            </div>
+                        </li>
+                        <li>
+                            <span class="property-name">Update only changed fields</span>
+                            <div class="property-description">Avoid replacing entire documents when only few fields
+                                change</div>
+                        </li>
+                        <li>
+                            <span class="property-name">Check update results</span>
+                            <div class="property-description">Verify updatedCount to ensure operations succeeded</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Delete Operations</h3>
+                    <div class="code-block">
+                        <pre><code>// ✅ Good: Always provide filters for delete()
+await users.delete({ inactive: true, lastLogin: { $lt: '2025-01-01' } });
+
+// ✅ Good: Use deleteById for single documents
+await users.deleteById('user_123');
+
+// ✅ Good: Use drop() to clear entire collection
+await users.drop();
+
+// ❌ Avoid: This will throw an error
+await users.delete({});  // Error: filters required</code></pre>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                            </path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        <div class="alert-content">
+                            <strong>Warning:</strong> Delete operations are permanent. Always double-check filters
+                            before deleting documents.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Performance Tips</h3>
+                    <ul class="property-list">
+                        <li>
+                            <span class="property-name">Use bulk inserts</span>
+                            <div class="property-description">Insert multiple documents at once instead of individual
+                                operations</div>
+                        </li>
+                        <li>
+                            <span class="property-name">Enable debug mode during development</span>
+                            <div class="property-description">Set <code class="code-inline">debug: true</code> to
+                                monitor performance and identify bottlenecks</div>
+                        </li>
+                        <li>
+                            <span class="property-name">Adjust auto-save interval</span>
+                            <div class="property-description">Balance between data safety and performance (default:
+                                5000ms)</div>
+                        </li>
+                        <li>
+                            <span class="property-name">Close database on shutdown</span>
+                            <div class="property-description">Always call <code class="code-inline">db.close()</code> to
+                                ensure all data is saved</div>
+                        </li>
+                        <li>
+                            <span class="property-name">Monitor collection sizes</span>
+                            <div class="property-description">Use <code class="code-inline">db.status()</code> to track
+                                storage usage</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>HTTP Mode Best Practices</h3>
+                    <div class="code-block">
+                        <pre><code>// ✅ Good: Configure connection pooling
+const db = new LiekoDB({
+  databaseUrl: 'http://127.0.0.1:8050',
+  token: 'your-auth-token',
+  poolSize: 10,        // Adjust based on concurrent requests
+  timeout: 15000       // Set appropriate timeout
+});
+
+// ✅ Good: Reuse database instance
+const dbInstance = new LiekoDB({ token: 'your-token' });
+const users = dbInstance.collection('users');
+const orders = dbInstance.collection('orders');</code></pre>
+                    </div>
+
+                    <ul class="property-list">
+                        <li>
+                            <span class="property-name">Secure your token</span>
+                            <div class="property-description">Never expose authentication tokens in client-side code
+                            </div>
+                        </li>
+                        <li>
+                            <span class="property-name">Configure pool size</span>
+                            <div class="property-description">Adjust poolSize based on expected concurrent requests
+                            </div>
+                        </li>
+                        <li>
+                            <span class="property-name">Set appropriate timeouts</span>
+                            <div class="property-description">Balance between reliability and responsiveness</div>
+                        </li>
+                        <li>
+                            <span class="property-name">Reuse database instances</span>
+                            <div class="property-description">Create one instance and reuse for all collections</div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="example-basic-crud" class="section">
+                <h2>Basic CRUD Operations</h2>
+                <p>Simple example covering insert, find, update, and delete operations.</p>
+                <div class="code-block">
+                    <pre><code>const LiekoDB = require('liekodb');
+
+const db = new LiekoDB({
+    storagePath: './storage',
+    debug: true
+});
+
+const users = db.collection('users');
+
+async function basicCRUD() {
+    // Insert users
+    console.log('=== Inserting users ===');
+    await users.insert([
+        { username: 'alice', email: 'alice@example.com', age: 28, role: 'admin' },
+        { username: 'bob', email: 'bob@example.com', age: 32, role: 'user' },
+        { username: 'charlie', email: 'charlie@example.com', age: 25, role: 'user' }
+    ]);
+
+    // Find all users
+    console.log('\n=== Finding all users ===');
+    const { data: allUsers } = await users.find();
+    console.log(`Found ${allUsers.foundCount} users`);
+
+    // Find specific user
+    console.log('\n=== Finding user by email ===');
+    const { data: alice } = await users.findOne({ email: 'alice@example.com' });
+    console.log('User:', alice);
+
+    // Update user
+    console.log('\n=== Updating user ===');
+    await users.update(
+        { username: 'alice' },
+        { $set: { age: 29 } }
+    );
+
+    // Delete user
+    console.log('\n=== Deleting user ===');
+    await users.delete({ username: 'charlie' });
+
+    // Final count
+    const count = await users.count();
+    console.log(`\nFinal count: ${count.data} users`);
+
+    await db.close();
+}
+
+basicCRUD().catch(console.error);</code></pre>
+                </div>
+            </section>
+
+            <section id="example-pagination" class="section">
+                <h2>Pagination Example</h2>
+                <p>Implement pagination with sorting and field projection.</p>
+                <div class="code-block">
+                    <pre><code>const LiekoDB = require('liekodb');
+
+const db = new LiekoDB({
+    storagePath: './storage',
+    debug: true
+});
+
+const products = db.collection('products');
+
+async function paginationExample() {
+    // Insert sample products
+    console.log('=== Inserting products ===');
+    const productList = [];
+    for (let i = 1; i <= 50; i++) {
+        productList.push({
+            name: `Product ${i}`,
+            price: Math.floor(Math.random() * 1000) + 10,
+            category: ['Electronics', 'Clothing', 'Books', 'Home'][Math.floor(Math.random() * 4)],
+            stock: Math.floor(Math.random() * 100)
+        });
+    }
+    await products.insert(productList);
+
+    // Paginated query
+    console.log('\n=== Page 1 (10 items per page) ===');
+    const { data: page1 } = await products.find(
+        { price: { $gte: 100 } },
+        {
+            sort: { price: -1 },
+            limit: 10,
+            page: 1,
+            fields: { name: 1, price: 1, category: 1 }
+        }
+    );
+
+    console.log(`Found ${page1.foundCount} products on this page`);
+    console.log(`Total matching: ${page1.pagination.total}`);
+    console.log(`Page ${page1.pagination.page} of ${page1.pagination.totalPages}`);
+    console.log(`Has next page: ${page1.pagination.hasNext}`);
+
+    page1.foundDocuments.forEach((product, idx) => {
+        console.log(`${idx + 1}. ${product.name} - $${product.price}`);
+    });
+
+    // Get next page
+    if (page1.pagination.hasNext) {
+        console.log('\n=== Page 2 ===');
+        const { data: page2 } = await products.find(
+            { price: { $gte: 100 } },
+            {
+                sort: { price: -1 },
+                limit: 10,
+                page: 2,
+                fields: { name: 1, price: 1 }
+            }
+        );
+
+        page2.foundDocuments.forEach((product, idx) => {
+            console.log(`${idx + 1}. ${product.name} - $${product.price}`);
+        });
+    }
+
+    await db.close();
+}
+
+paginationExample().catch(console.error);</code></pre>
+                </div>
+            </section>
+
+            <section id="example-advanced-filtering" class="section">
+                <h2>Advanced Filtering</h2>
+                <p>Complex queries with multiple operators and nested conditions.</p>
+                <div class="code-block">
+                    <pre><code>const LiekoDB = require('liekodb');
+
+const db = new LiekoDB({
+    storagePath: './storage',
+    debug: true
+});
+
+const orders = db.collection('orders');
+
+async function advancedFiltering() {
+    // Insert sample orders
+    console.log('=== Inserting orders ===');
+    await orders.insert([
+        {
+            orderId: 'ORD001',
+            customer: { name: 'Alice', email: 'alice@example.com', vip: true },
+            items: ['laptop', 'mouse', 'keyboard'],
+            total: 1250.50,
+            status: 'completed',
+            shippedAt: '2025-01-05T10:00:00Z'
+        },
+        {
+            orderId: 'ORD002',
+            customer: { name: 'Bob', email: 'bob@example.com', vip: false },
+            items: ['phone'],
+            total: 899.99,
+            status: 'pending',
+            shippedAt: null
+        },
+        {
+            orderId: 'ORD003',
+            customer: { name: 'Charlie', email: 'charlie@gmail.com', vip: true },
+            items: ['tablet', 'case'],
+            total: 450.00,
+            status: 'completed',
+            shippedAt: '2025-01-07T14:30:00Z'
+        },
+        {
+            orderId: 'ORD004',
+            customer: { name: 'Diana', email: 'diana@example.com', vip: false },
+            items: ['headphones'],
+            total: 150.00,
+            status: 'cancelled',
+            shippedAt: null
+        },
+        {
+            orderId: 'ORD005',
+            customer: { name: 'Eve', email: 'eve@gmail.com', vip: true },
+            items: ['monitor', 'cable', 'adapter'],
+            total: 650.00,
+            status: 'pending',
+            shippedAt: null
+        }
+    ]);
+
+    // Complex filter 1: VIP customers with completed orders over $500
+    console.log('\n=== VIP customers with completed orders > $500 ===');
+    const { data: vipOrders } = await orders.find({
+        'customer.vip': true,
+        status: 'completed',
+        total: { $gt: 500 }
+    });
+    console.log(`Found ${vipOrders.foundCount} orders`);
+    vipOrders.foundDocuments.forEach(order => {
+        console.log(`- ${order.orderId}: ${order.customer.name} - $${order.total}`);
+    });
+
+    // Complex filter 2: Gmail users OR orders with multiple items
+    console.log('\n=== Gmail users OR orders with 3+ items ===');
+    const { data: complexOrders } = await orders.find({
+        $or: [
+            { 'customer.email': { $regex: /@gmail\.com$/ } },
+            { items: { $exists: true } }
+        ]
+    });
+
+    const filtered = complexOrders.foundDocuments.filter(order =>
+        order.customer.email.includes('@gmail.com') || order.items.length >= 3
+    );
+
+    console.log(`Found ${filtered.length} orders`);
+    filtered.forEach(order => {
+        console.log(`- ${order.orderId}: ${order.items.length} items, ${order.customer.email}`);
+    });
+
+    // Complex filter 3: Pending or cancelled, not shipped, under $1000
+    console.log('\n=== Pending/Cancelled, not shipped, under $1000 ===');
+    const { data: pendingOrders } = await orders.find({
+        status: { $in: ['pending', 'cancelled'] },
+        shippedAt: null,
+        total: { $lt: 1000 }
+    });
+    console.log(`Found ${pendingOrders.foundCount} orders`);
+    pendingOrders.foundDocuments.forEach(order => {
+        console.log(`- ${order.orderId}: ${order.status} - $${order.total}`);
+    });
+
+    // Complex filter 4: NOT cancelled AND (VIP OR total > $800)
+    console.log('\n=== Active orders: VIP or high value ===');
+    const { data: activeOrders } = await orders.find({
+        status: { $ne: 'cancelled' },
+        $or: [
+            { 'customer.vip': true },
+            { total: { $gte: 800 } }
+        ]
+    });
+    console.log(`Found ${activeOrders.foundCount} orders`);
+    activeOrders.foundDocuments.forEach(order => {
+        console.log(`- ${order.orderId}: ${order.customer.name} (VIP: ${order.customer.vip}) - $${order.total}`);
+    });
+
+    // Complex filter 5: NOR query - exclude both cancelled and low-value orders
+    console.log('\n=== Exclude cancelled AND orders under $200 ===');
+    const { data: qualityOrders } = await orders.find({
+        $nor: [
+            { status: 'cancelled' },
+            { total: { $lt: 200 } }
+        ]
+    });
+    console.log(`Found ${qualityOrders.foundCount} orders`);
+    qualityOrders.foundDocuments.forEach(order => {
+        console.log(`- ${order.orderId}: ${order.status} - $${order.total}`);
+    });
+
+    await db.close();
+}
+
+advancedFiltering().catch(console.error);</code></pre>
+                </div>
+            </section>
+
+            <section id="example-update-operations" class="section">
+                <h2>Update Operations</h2>
+                <p>Demonstrate various update operators including arrays and nested fields.</p>
+                <div class="code-block">
+                    <pre><code>const LiekoDB = require('liekodb');
+
+const db = new LiekoDB({
+    storagePath: './storage',
+    debug: true
+});
+
+const profiles = db.collection('profiles');
+
+async function updateOperations() {
+    // Insert initial profile
+    console.log('=== Inserting profile ===');
+    const { data: insertResult } = await profiles.insert({
+        username: 'john_doe',
+        email: 'john@example.com',
+        stats: {
+            loginCount: 0,
+            lastLogin: null,
+            points: 100
+        },
+        tags: ['new'],
+        preferences: {
+            theme: 'light',
+            notifications: true
+        }
+    });
+
+    const userId = insertResult.insertedIds[0];
+
+    // $inc - Increment login count
+    console.log('\n=== Incrementing login count ===');
+    await profiles.updateById(userId, {
+        $inc: { 'stats.loginCount': 1 },
+        $set: { 'stats.lastLogin': new Date().toISOString() }
+    });
+
+    // $push - Add tags
+    console.log('\n=== Adding tags ===');
+    await profiles.updateById(userId, {
+        $push: { tags: 'active' }
+    });
+
+    // $addToSet - Add tag without duplicates
+    console.log('\n=== Adding unique tag ===');
+    await profiles.updateById(userId, {
+        $addToSet: { tags: 'verified' }
+    });
+    await profiles.updateById(userId, {
+        $addToSet: { tags: 'verified' }  // Won't create duplicate
+    });
+
+    // Multiple operations
+    console.log('\n=== Multiple updates ===');
+    await profiles.updateById(userId, {
+        $inc: { 'stats.points': 50, 'stats.loginCount': 1 },
+        $set: { 'preferences.theme': 'dark' },
+        $push: { tags: 'premium' }
+    });
+
+    // $pull - Remove tag
+    console.log('\n=== Removing tag ===');
+    await profiles.updateById(userId, {
+        $pull: { tags: 'new' }
+    });
+
+    // Get final state
+    const { data: finalProfile } = await profiles.findById(userId);
+    console.log('\n=== Final profile ===');
+    console.log(JSON.stringify(finalProfile, null, 2));
+
+    await db.close();
+}
+
+updateOperations().catch(console.error);</code></pre>
+                </div>
+            </section>
+
+            <section id="example-bulk-operations" class="section">
+                <h2>Bulk Operations & Performance</h2>
+                <p>Efficiently handle large datasets with bulk inserts and batch updates.</p>
+                <div class="code-block">
+                    <pre><code>const LiekoDB = require('liekodb');
+
+const db = new LiekoDB({
+    storagePath: './storage',
+    autoSaveInterval: 10000,
+    debug: true
+});
+
+const analytics = db.collection('analytics');
+
+async function bulkOperations() {
+    console.log('=== Bulk Insert Performance Test ===');
+
+    // Generate large dataset
+    const events = [];
+    const startTime = Date.now();
+
+    for (let i = 1; i <= 10000; i++) {
+        events.push({
+            eventType: ['click', 'view', 'purchase', 'signup'][Math.floor(Math.random() * 4)],
+            userId: `user_${Math.floor(Math.random() * 1000)}`,
+            timestamp: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
+            value: Math.floor(Math.random() * 100),
+            metadata: {
+                device: ['mobile', 'desktop', 'tablet'][Math.floor(Math.random() * 3)],
+                country: ['US', 'UK', 'FR', 'DE', 'JP'][Math.floor(Math.random() * 5)]
+            }
+        });
+    }
+
+    console.log(`Generated ${events.length} events in ${Date.now() - startTime}ms`);
+
+    // Bulk insert
+    const insertStart = Date.now();
+    const { data: insertResult } = await analytics.insert(events);
+    console.log(`Inserted ${insertResult.insertedCount} documents in ${Date.now() - insertStart}ms`);
+
+    // Bulk update - mark recent purchases
+    console.log('\n=== Bulk Update ===');
+    const updateStart = Date.now();
+    const recentDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+    const { data: updateResult } = await analytics.update(
+        {
+            eventType: 'purchase',
+            timestamp: { $gte: recentDate }
+        },
+        { $set: { processed: true } },
+        { returnType: 'count' }
+    );
+    console.log(`Updated ${updateResult.updatedCount} documents in ${Date.now() - updateStart}ms`);
+
+    // Aggregate queries
+    console.log('\n=== Statistics ===');
+
+    const { data: byType } = await analytics.find();
+    const typeCount = {};
+    byType.foundDocuments.forEach(event => {
+        typeCount[event.eventType] = (typeCount[event.eventType] || 0) + 1;
+    });
+    console.log('Events by type:', typeCount);
+
+    const { data: mobileUsers } = await analytics.find({
+        'metadata.device': 'mobile',
+        eventType: 'purchase'
+    });
+    console.log(`Mobile purchases: ${mobileUsers.foundCount}`);
+
+    // Cleanup old events
+    console.log('\n=== Cleanup ===');
+    const oldDate = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString();
+    const { data: deleteResult } = await analytics.delete({
+        timestamp: { $lt: oldDate }
+    });
+    console.log(`Deleted ${deleteResult.deletedCount} old events`);
+
+    const finalCount = await analytics.count();
+    console.log(`Final count: ${finalCount.data} events`);
+
+    await db.close();
+}
+
+bulkOperations().catch(console.error);</code></pre>
+                </div>
+            </section>
+
+            <section id="example-ecommerce" class="section">
+                <h2>E-commerce Store Example</h2>
+                <p>Complete example simulating an e-commerce system with products, orders, and inventory management.</p>
+                <div class="code-block">
+                    <pre><code>const LiekoDB = require('liekodb');
+
+const db = new LiekoDB({
+    storagePath: './storage',
+    debug: true
+});
+
+const products = db.collection('products');
+const customers = db.collection('customers');
+const orders = db.collection('orders');
+
+async function ecommerceExample() {
+    // Setup products
+    console.log('=== Setting up products ===');
+    await products.insert([
+        { sku: 'LAPTOP-001', name: 'Pro Laptop', price: 1299.99, stock: 15, category: 'Electronics' },
+        { sku: 'MOUSE-001', name: 'Wireless Mouse', price: 29.99, stock: 50, category: 'Accessories' },
+        { sku: 'KEYBOARD-001', name: 'Mechanical Keyboard', price: 89.99, stock: 30, category: 'Accessories' },
+        { sku: 'MONITOR-001', name: '4K Monitor', price: 449.99, stock: 20, category: 'Electronics' },
+        { sku: 'HEADSET-001', name: 'Gaming Headset', price: 79.99, stock: 25, category: 'Accessories' }
+    ]);
+
+    // Register customers
+    console.log('\n=== Registering customers ===');
+    const { data: customer1 } = await customers.insert({
+        name: 'Alice Johnson',
+        email: 'alice@example.com',
+        address: {
+            street: '123 Main St',
+            city: 'New York',
+            country: 'US'
+        },
+        loyaltyPoints: 0,
+        orders: []
+    });
+
+    const customerId = customer1.insertedIds[0];
+
+    // Create order
+    console.log('\n=== Creating order ===');
+    const orderItems = [
+        { sku: 'LAPTOP-001', quantity: 1, price: 1299.99 },
+        { sku: 'MOUSE-001', quantity: 2, price: 29.99 }
+    ];
+
+    const orderTotal = orderItems.reduce((sum, item) =>
+        sum + (item.price * item.quantity), 0
+    );
+
+    const { data: orderResult } = await orders.insert({
+        customerId: customerId,
+        items: orderItems,
+        total: orderTotal,
+        status: 'pending',
+        shippingAddress: {
+            street: '123 Main St',
+            city: 'New York',
+            country: 'US'
+        }
+    });
+
+    const orderId = orderResult.insertedIds[0];
+
+    // Update inventory
+    console.log('\n=== Updating inventory ===');
+    for (const item of orderItems) {
+        await products.update(
+            { sku: item.sku },
+            { $inc: { stock: -item.quantity } }
+        );
+    }
+
+    // Add loyalty points (10% of total)
+    const pointsEarned = Math.floor(orderTotal * 0.1);
+    await customers.updateById(customerId, {
+        $inc: { loyaltyPoints: pointsEarned },
+        $push: { orders: orderId }
+    });
+
+    // Process order
+    console.log('\n=== Processing order ===');
+    await orders.updateById(orderId, {
+        $set: {
+            status: 'shipped',
+            shippedAt: new Date().toISOString()
+        }
+    });
+
+    // Generate reports
+    console.log('\n=== Sales Report ===');
+
+    // Low stock products
+    const { data: lowStock } = await products.find(
+        { stock: { $lt: 20 } },
+        { sort: { stock: 1 } }
+    );
+    console.log(`\nLow stock products (${lowStock.foundCount}):`);
+    lowStock.foundDocuments.forEach(product => {
+        console.log(`- ${product.name}: ${product.stock} units`);
+    });
+
+    // Customer summary
+    const { data: customer } = await customers.findById(customerId);
+    console.log(`\nCustomer: ${customer.name}`);
+    console.log(`Loyalty Points: ${customer.loyaltyPoints}`);
+    console.log(`Total Orders: ${customer.orders.length}`);
+
+    // Orders by status
+    const { data: pendingOrders } = await orders.count({ status: 'pending' });
+    const { data: shippedOrders } = await orders.count({ status: 'shipped' });
+    console.log(`\nOrders Summary:`);
+    console.log(`- Pending: ${pendingOrders}`);
+    console.log(`- Shipped: ${shippedOrders}`);
+
+    await db.close();
+}
+
+ecommerceExample().catch(console.error);</code></pre>
+                </div>
+            </section>
+
+            <section id="example-analytics" class="section">
+                <h2>Real-time Analytics Dashboard</h2>
+                <p>Track user activity and generate real-time statistics.</p>
+                <div class="code-block">
+                    <pre><code>const LiekoDB = require('liekodb');
+
+const db = new LiekoDB({
+    storagePath: './storage',
+    debug: true
+});
+
+const sessions = db.collection('sessions');
+const pageViews = db.collection('pageViews');
+
+async function analyticsExample() {
+    // Simulate user sessions
+    console.log('=== Generating session data ===');
+
+    const users = ['user_1', 'user_2', 'user_3', 'user_4', 'user_5'];
+    const pages = ['/home', '/products', '/about', '/contact', '/checkout'];
+
+    // Create sessions
+    for (let i = 0; i < 20; i++) {
+        const userId = users[Math.floor(Math.random() * users.length)];
+        const startTime = new Date(Date.now() - Math.random() * 24 * 60 * 60 * 1000);
+        const duration = Math.floor(Math.random() * 1800) + 60; // 1-30 min
+
+        await sessions.insert({
+            userId,
+            startTime: startTime.toISOString(),
+            endTime: new Date(startTime.getTime() + duration * 1000).toISOString(),
+            duration,
+            device: ['mobile', 'desktop'][Math.floor(Math.random() * 2)],
+            browser: ['Chrome', 'Firefox', 'Safari'][Math.floor(Math.random() * 3)],
+            pagesVisited: Math.floor(Math.random() * 10) + 1
+        });
+    }
+
+    // Generate page views
+    for (let i = 0; i < 100; i++) {
+        await pageViews.insert({
+            userId: users[Math.floor(Math.random() * users.length)],
+            page: pages[Math.floor(Math.random() * pages.length)],
+            timestamp: new Date(Date.now() - Math.random() * 24 * 60 * 60 * 1000).toISOString(),
+            duration: Math.floor(Math.random() * 300) + 10
+        });
+    }
+
+    // Analytics queries
+    console.log('\n=== Dashboard Analytics ===');
+
+    // Total sessions by device
+    const { data: allSessions } = await sessions.find();
+    const deviceStats = {};
+    allSessions.foundDocuments.forEach(session => {
+        deviceStats[session.device] = (deviceStats[session.device] || 0) + 1;
+    });
+    console.log('\nSessions by device:', deviceStats);
+
+    // Active users (sessions in last hour)
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const { data: recentSessions } = await sessions.find({
+        startTime: { $gte: oneHourAgo }
+    });
+    const activeUsers = new Set(recentSessions.foundDocuments.map(s => s.userId));
+    console.log(`\nActive users (last hour): ${activeUsers.size}`);
+
+    // Average session duration
+    const totalDuration = allSessions.foundDocuments.reduce((sum, s) => sum + s.duration, 0);
+    const avgDuration = Math.floor(totalDuration / allSessions.foundCount);
+    console.log(`Average session duration: ${Math.floor(avgDuration / 60)}m ${avgDuration % 60}s`);
+
+    // Most visited pages
+    const { data: allViews } = await pageViews.find();
+    const pageStats = {};
+    allViews.foundDocuments.forEach(view => {
+        pageStats[view.page] = (pageStats[view.page] || 0) + 1;
+    });
+
+    console.log('\nMost visited pages:');
+    Object.entries(pageStats)
+        .sort((a, b) => b[1] - a[1])
+        .forEach(([page, count]) => {
+            console.log(`  ${page}: ${count} views`);
+        });
+
+    // Long sessions (> 10 minutes)
+    const { data: longSessions } = await sessions.find({
+        duration: { $gt: 600 }
+    });
+    console.log(`\nEngaged users (sessions > 10min): ${longSessions.foundCount}`);
+
+    // Mobile vs Desktop engagement
+    const { data: mobileSessions } = await sessions.find({ device: 'mobile' });
+    const mobileAvg = mobileSessions.foundDocuments.reduce((sum, s) => sum + s.pagesVisited, 0)
+        / mobileSessions.foundCount;
+
+    const { data: desktopSessions } = await sessions.find({ device: 'desktop' });
+    const desktopAvg = desktopSessions.foundDocuments.reduce((sum, s) => sum + s.pagesVisited, 0)
+        / desktopSessions.foundCount;
+
+    console.log(`\nAverage pages per session:`);
+    console.log(`  Mobile: ${mobileAvg.toFixed(1)}`);
+    console.log(`  Desktop: ${desktopAvg.toFixed(1)}`);
+
+    await db.close();
+}
+
+analyticsExample().catch(console.error);</code></pre>
+                </div>
+
+                <div class="alert alert-info">
+                    <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    <div class="alert-content">
+                        <strong>Running Examples:</strong> Make sure to install LiekoDB first with <code
+                            class="code-inline">npm install liekodb</code>, then save any example to a .js file and run
+                        with <code class="code-inline">node filename.js</code>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+
+    <!-- Languages -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-sql.min.js"></script>
+
+    <!-- Plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/toolbar/prism-toolbar.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+
+    <script>
+        document.querySelectorAll("pre").forEach(pre => {
+            if (pre.querySelector(".pre-copy-btn")) return;
+
+            const btn = document.createElement("button");
+            btn.className = "pre-copy-btn";
+            btn.title = "Copy to clipboard";
+
+            btn.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 24 24"
+         fill="none"
+         stroke="currentColor"
+         stroke-width="2"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+      <rect x="9" y="9" width="13" height="13" rx="2"/>
+      <path d="M5 15H4a2 2 0 0 1-2-2V4
+               a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+    </svg>
+  `;
+
+            btn.addEventListener("click", () => {
+                const code = pre.querySelector("code")?.innerText || pre.innerText;
+                navigator.clipboard.writeText(code);
+
+                btn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg"
+           viewBox="0 0 24 24"
+           fill="none"
+           stroke="currentColor"
+           stroke-width="2"
+           stroke-linecap="round"
+           stroke-linejoin="round">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
+    `;
+
+                setTimeout(() => {
+                    btn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg"
+             viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="2"
+             stroke-linecap="round"
+             stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2"/>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4
+                   a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+      `;
+                }, 900);
+            });
+
+            pre.appendChild(btn);
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll("pre code").forEach(code => {
+            const text = code.textContent.trim();
+
+            if (text.startsWith("{") || text.startsWith("[")) {
+                code.classList.add("language-json");
+            } else if (text.startsWith("curl ") || text.includes(" -X ")) {
+                code.classList.add("language-bash");
+            } else if (text.includes("SELECT ") || text.includes("INSERT ")) {
+                code.classList.add("language-sql");
+            } else {
+                code.classList.add("language-javascript");
+            }
+
+            code.parentElement.classList.add("line-numbers");
+        });
+
+        Prism.highlightAll();
+    </script>
+
+
+    <script>
+        const STORAGE_KEY = 'preferred_code_os';
+
+        document.querySelector('.logo').addEventListener('click', () => {
+            //window.location.href = 'https://min3.online';
+        });
+
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        const sections = document.querySelectorAll('.section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        document.querySelectorAll('.code-tabs').forEach(container => {
+            const tabs = container.querySelectorAll('.code-tab');
+            const contents = container.querySelectorAll('.tab-content');
+            const copyBtn = container.querySelector('.copy-btn');
+
+            const preferred = localStorage.getItem(STORAGE_KEY) || tabs[0].dataset.os;
+
+            function activate(os) {
+                tabs.forEach(t => t.classList.toggle('active', t.dataset.os === os));
+                contents.forEach(c => c.classList.toggle('active', c.dataset.os === os));
+            }
+
+            activate(preferred);
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    localStorage.setItem(STORAGE_KEY, tab.dataset.os);
+                    activate(tab.dataset.os);
+                });
+            });
+
+            copyBtn.addEventListener('click', () => {
+                const code = container.querySelector('.tab-content.active pre').textContent;
+                navigator.clipboard.writeText(code);
+                copyBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>`;
+                setTimeout(() => copyBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide">
+                                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect>
+                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2">
+                                    </path>
+                                </svg>`, 800);
+            });
+        });
+    </script>
+</body>
+
+</html>
