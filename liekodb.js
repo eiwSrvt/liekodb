@@ -26,8 +26,6 @@ class CollectionCache {
             }, autoSaveInterval);
             this.autoSaveTimer.unref();
         }
-
-        this._setupShutdown();
     }
 
     async _withLock(name, fn) {
@@ -93,34 +91,6 @@ class CollectionCache {
         }
     }
 
-    reorderDocumentFields = (document) => {
-        if (!document || typeof document !== 'object') return document;
-
-        const orderedDocument = {};
-        const reservedFields = ['id', 'createdAt', 'updatedAt'];
-
-        if (document.id !== undefined) {
-            orderedDocument.id = document.id;
-        }
-
-        const normalFields = Object.keys(document)
-            .filter(key => !reservedFields.includes(key))
-            .sort();
-
-        for (const key of normalFields) {
-            orderedDocument[key] = structuredClone(document[key]);
-        }
-
-        if (document.createdAt !== undefined) {
-            orderedDocument.createdAt = document.createdAt;
-        }
-        if (document.updatedAt !== undefined) {
-            orderedDocument.updatedAt = document.updatedAt;
-        }
-
-        return orderedDocument;
-    }
-
     async _saveUnlocked(name, data) {
         const filePath = path.join(this.storagePath, `${name}.json`);
         const tmpPath = `${filePath}.${Date.now()}.tmp`;
@@ -132,12 +102,11 @@ class CollectionCache {
 
             const content =
                 '[\n' +
-                data.documents.map(doc => JSON.stringify(this.reorderDocumentFields(doc))).join(',\n') +
+                data.documents.map(doc => JSON.stringify(Utils.reorderDocumentFields(doc))).join(',\n') +
                 '\n]';
 
             await fs.writeFile(tmpPath, content, 'utf8');
 
-            // sanity check
             JSON.parse(await fs.readFile(tmpPath, 'utf8'));
 
             await fs.rename(tmpPath, filePath);
@@ -176,10 +145,9 @@ class CollectionCache {
                 throw new Error(`[CollectionCache.updateDocument] Document ${id} not found in ${name}`);
             }
 
-            const updated = {
-                ...data.documents[idx],
-                ...updateFn({ ...data.documents[idx] })
-            };
+            const updated = { ...data.documents[idx] };
+
+            updateFn(updated);
 
             if (updated.id !== id) {
                 throw new Error('[CollectionCache.update] Updated document id cannot be changed');
@@ -260,20 +228,14 @@ class CollectionCache {
         console.log(`[CollectionCache] Flushed ${savePromises.length} collections in ${Format.formatDuration(Utils.endTimer(start))}`);
     }
 
-    _setupShutdown() {
-        if (typeof process === 'undefined') return;
-
-        const shutdown = async (signal) => {
-            if (this.debug) {
-                console.log(`[CollectionCache] ${signal} received`);
-            }
-            await this.flushAll();
-        };
-
-        process.once('SIGINT', () => shutdown('SIGINT'));
-        process.once('SIGTERM', () => shutdown('SIGTERM'));
-        process.once('beforeExit', () => this.flushAll());
-    }
+    async shutdown(signal) {
+        if (this.debug) {
+            console.log(`[CollectionCache] ${signal} received`);
+        }
+        await this.flushAll();
+        return true;
+        //process.exit(0);
+    };
 }
 
 class QueryEngine {
@@ -1130,9 +1092,9 @@ class LocalAdapter {
 
             const response = {
                 data: {
-                    foundCount: documents.length,
-                    foundDocuments: documents,
-                    totalDocuments: collection.documents.length
+                    //foundCount: documents.length,
+                    documents,
+                    //totalDocuments: collection.documents.length
                 }
             };
 
@@ -1140,13 +1102,12 @@ class LocalAdapter {
                 const page = Math.floor(skipNum / limitNum) + 1;
                 const totalPages = Math.max(1, Math.ceil(totalFilteredDocuments / limitNum));
 
-                response.data.isPaginated = true;
                 response.data.pagination = {
                     page,
                     limit: limitNum,
                     skip: skipNum,
 
-                    total: totalFilteredDocuments,
+                    totalDocuments: totalFilteredDocuments,
                     totalPages,
 
                     hasNext: page < totalPages,
@@ -1428,12 +1389,13 @@ class LocalAdapter {
     async updateById(id, { update = {}, options = {} } = {}) {
         const start = Utils.startTimer();
         try {
-            const returnType = options.returnType || 'document';
+            const returnType = options.returnType;
 
             const updatedDoc = await this.cache.updateDocument(
                 this.collectionName,
                 id,
                 (doc) => {
+                    console.log(doc);
                     const normalizedUpdate = Object.keys(update).some(k => k.startsWith('$'))
                         ? update
                         : { $set: update };
@@ -1616,6 +1578,14 @@ class LocalAdapter {
         }
     }
 
+    async flushAll() {
+        await this.cache.flushAll();
+    }
+
+    async shutdown(signal) {
+        await this.cache.shutdown(signal);
+    }
+
     async close() {
         await this.cache.flushAll();
         return true;
@@ -1666,9 +1636,9 @@ class Collection {
 
             if (error) return { error };
 
-            if (data.foundDocuments.length > 0) {
+            if (data.documents.length > 0) {
                 return {
-                    data: data.foundDocuments[0]
+                    data: data.documents[0]
                 };
             }
 
@@ -1752,6 +1722,8 @@ class LiekoDB {
             );
         }
         this.adapter = this._createAdapter(options);
+
+        this._setupShutdown();
     }
 
     _createAdapter(options) {
@@ -1787,7 +1759,16 @@ class LiekoDB {
     }
 
     async close() {
-        return this.adapter.close();
+        //promise
+        return await this.adapter.close();
+    }
+
+    _setupShutdown() {
+        if (typeof process === 'undefined') return;
+
+        process.once('SIGINT', () => this.adapter.shutdown('SIGINT'));
+        process.once('SIGTERM', () => this.adapter.shutdown('SIGTERM'));
+        process.once('beforeExit', () => this.adapter.flushAll());
     }
 }
 
@@ -1967,7 +1948,7 @@ class Validator {
                     throw new Error('Page must be a positive number');
                 }
             } else if (key === 'returnType') {
-                const validTypes = ['count', 'ids', 'documents'];
+                const validTypes = ['count', 'ids', 'documents', 'document', 'id'];
                 if (!validTypes.includes(options[key])) {
                     throw new Error(
                         `Invalid returnType: "${options[key]}". ` +
@@ -2004,6 +1985,34 @@ class Utils {
         } catch (e) {
             return 0;
         }
+    }
+
+    static reorderDocumentFields = (document) => {
+        if (!document || typeof document !== 'object') return document;
+
+        const orderedDocument = {};
+        const reservedFields = ['id', 'createdAt', 'updatedAt'];
+
+        if (document.id !== undefined) {
+            orderedDocument.id = document.id;
+        }
+
+        const normalFields = Object.keys(document)
+            .filter(key => !reservedFields.includes(key))
+            .sort();
+
+        for (const key of normalFields) {
+            orderedDocument[key] = structuredClone(document[key]);
+        }
+
+        if (document.createdAt !== undefined) {
+            orderedDocument.createdAt = document.createdAt;
+        }
+        if (document.updatedAt !== undefined) {
+            orderedDocument.updatedAt = document.updatedAt;
+        }
+
+        return orderedDocument;
     }
 }
 
