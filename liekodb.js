@@ -1093,7 +1093,7 @@ class LocalAdapter {
             const response = {
                 data: {
                     //foundCount: documents.length,
-                    documents,
+                    documents: structuredClone(documents),
                     //totalDocuments: collection.documents.length
                 }
             };
@@ -1178,7 +1178,7 @@ class LocalAdapter {
             this.logRequest('find_By_Id', details, duration, Utils.getDataSize(document));
 
             return {
-                data: document ?? null
+                data: structuredClone(document) ?? null
             };
 
         } catch (err) {
